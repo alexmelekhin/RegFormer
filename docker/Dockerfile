@@ -33,6 +33,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     libxmlsec1-dev \
     libffi-dev \
     liblzma-dev \
+    python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
 # symlink for python3
@@ -55,6 +56,11 @@ RUN mkdir Datasets && chown -R ${UID}:${GID} /home/${USER}
 USER ${UID}:${GID}
 
 ENV PATH="/home/${USER}/.local/bin:$PATH"
+
+# create venv
+ENV VIRTUAL_ENV="/home/${USER}/.venv"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+RUN python -m venv $VIRTUAL_ENV
 
 # upgrade pip
 ARG PIP_VERSION=23.3.1
